@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PathMeasure;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -25,6 +26,7 @@ public class HollowOutView extends View {
 
     private Paint paint;
     private Path path;
+    private PathMeasure pathMeasure;
 
     public HollowOutView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -42,6 +44,13 @@ public class HollowOutView extends View {
         //2.2 path.fileType = EVEN_ODD （常用）
         //        2.2.1 不考虑方向。穿插奇数次则为内部，偶数次则为外部：
         path.setFillType(Path.FillType.EVEN_ODD);
+
+        pathMeasure = new PathMeasure();
+
+        //forceClosed 是否自动填充未补全图形
+        pathMeasure.setPath(path,false);
+//        pathMeasure.getLength();
+//        pathMeasure.getPosTan();
     }
 
     @Override
@@ -54,6 +63,7 @@ public class HollowOutView extends View {
                 Path.Direction.CW);
 
         path.addCircle(getWidth() / 2 ,(float) getHeight() / 2 - px2dp(100),px2dp(100), Path.Direction.CCW);
+
     }
 
     @Override
